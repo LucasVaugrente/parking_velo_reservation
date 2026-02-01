@@ -11,11 +11,9 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface UtilisateurMapper {
     UtilisateurResponseDTO toResponseDto(Utilisateur entity);
-
     List<UtilisateurResponseDTO> toResponseDtoList(List<Utilisateur> entities);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "reservations", ignore = true)
-    @Mapping(target = "password", source = "password") // Add this line
     Utilisateur toEntity(UtilisateurCreateDTO dto);
 }

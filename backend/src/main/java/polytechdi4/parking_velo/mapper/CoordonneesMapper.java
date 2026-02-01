@@ -9,7 +9,7 @@ public interface CoordonneesMapper {
     CoordonneesDTO toDTO(Coordonnees coordonnees);
 
     @Mapping(target = "velos", ignore = true)
-    Coordonnees toEntity(CoordonneesDTO coordonneesDTO);
+    Coordonnees toEntity(CoordonneesDTO dto);
 
     @Mapping(target = "velos", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

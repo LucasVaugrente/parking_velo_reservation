@@ -4,7 +4,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import polytechdi4.parking_velo.dto.ReservationResponseDTO;
 import polytechdi4.parking_velo.model.Reservation;
-import polytechdi4.parking_velo.dto.ReservationCreateDTO;
 
 import java.util.List;
 
@@ -18,10 +17,4 @@ public interface ReservationMapper {
     ReservationResponseDTO toResponseDto(Reservation entity);
 
     List<ReservationResponseDTO> toResponseDtoList(List<Reservation> entities);
-
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "utilisateur", ignore = true)
-    @Mapping(target = "velo", ignore = true)
-    Reservation toEntity(ReservationCreateDTO dto);
-
 }

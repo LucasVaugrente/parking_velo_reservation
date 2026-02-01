@@ -2,8 +2,6 @@ package polytechdi4.parking_velo.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import polytechdi4.parking_velo.dto.VeloCreateDTO;
-import polytechdi4.parking_velo.dto.VeloUpdateDTO;
 import polytechdi4.parking_velo.dto.VeloResponseDTO;
 import polytechdi4.parking_velo.model.Velo;
 
@@ -16,10 +14,4 @@ public interface VeloMapper {
     VeloResponseDTO toResponseDto(Velo entity);
 
     List<VeloResponseDTO> toResponseDtoList(List<Velo> entities);
-
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "reservations", ignore = true)
-    Velo toEntity(VeloCreateDTO dto);
-
-    Velo toEntity(VeloUpdateDTO dto);
 }

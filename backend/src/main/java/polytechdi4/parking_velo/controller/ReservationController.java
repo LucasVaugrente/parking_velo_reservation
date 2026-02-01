@@ -9,6 +9,7 @@ import polytechdi4.parking_velo.dto.ReservationResponseDTO;
 import polytechdi4.parking_velo.service.ReservationService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/reservations")
@@ -57,4 +58,11 @@ public class ReservationController {
                        @PathVariable Integer veloId) {
         reservationService.delete(utilisateurId, veloId);
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> handleIllegalArgument(IllegalArgumentException ex) {
+        return Map.of("message", ex.getMessage());
+    }
+
 }
