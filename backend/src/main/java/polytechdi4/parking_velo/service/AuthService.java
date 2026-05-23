@@ -1,8 +1,9 @@
 package polytechdi4.parking_velo.service;
 
 import org.springframework.stereotype.Service;
-import polytechdi4.parking_velo.hashPassword.HashPwd;
+
 import polytechdi4.parking_velo.repository.UtilisateurRepository;
+import polytechdi4.parking_velo.security.HashPassword;
 
 @Service
 public class AuthService {
@@ -14,7 +15,7 @@ public class AuthService {
 
     public boolean login(String mail, String password) {
 
-        String hashed = HashPwd.sha256(password);
+        String hashed = HashPassword.sha256(password);
 
         return repo.findByMail(mail)
                 .map(u -> u.getPassword().equals(hashed))

@@ -29,39 +29,37 @@ public class ReservationService {
 
     public ReservationResponseDTO create(ReservationCreateDTO dto) {
 
-    Utilisateur u = utilisateurRepository.findById(dto.getUtilisateurId())
-            .orElseThrow(() -> new NotFoundException(
-                    "Utilisateur " + dto.getUtilisateurId() + " introuvable"));
+        Utilisateur u = utilisateurRepository.findById(dto.getUtilisateurId())
+                .orElseThrow(() -> new NotFoundException(
+                        "Utilisateur " + dto.getUtilisateurId() + " introuvable"));
 
-    Velo v = veloRepository.findById(dto.getVeloId().longValue())
-            .orElseThrow(() -> new NotFoundException(
-                    "Vélo " + dto.getVeloId() + " introuvable"));
+        Velo v = veloRepository.findById(dto.getVeloId().longValue())
+                .orElseThrow(() -> new NotFoundException(
+                        "Vélo " + dto.getVeloId() + " introuvable"));
 
-    ReservationId id = new ReservationId(u.getId(), v.getId());
+        ReservationId id = new ReservationId(u.getId(), v.getId());
 
-    if (reservationRepository.existsById(id)) {
-        throw new IllegalArgumentException(
-                "Une réservation existe déjà pour cet utilisateur et ce vélo"
-        );
-    }
+        if (reservationRepository.existsById(id)) {
+            throw new IllegalArgumentException(
+                    "Une réservation existe déjà pour cet utilisateur et ce vélo");
+        }
 
-    if (dto.getReservation() > v.getQuantite()) {
-        throw new IllegalArgumentException(
-                "Plus de vélos disponibles pour ce vélo"
-        );
-    }
+        if (dto.getReservation() > v.getQuantite()) {
+            throw new IllegalArgumentException(
+                    "Plus de vélos disponibles pour ce vélo");
+        }
 
-    v.setQuantite(v.getQuantite() - dto.getReservation());
-    veloRepository.save(v);
+        v.setQuantite(v.getQuantite() - dto.getReservation());
+        veloRepository.save(v);
 
-    Reservation reservation = new Reservation();
-    reservation.setId(id);
-    reservation.setUtilisateur(u);
-    reservation.setVelo(v);
-    reservation.setReservation(dto.getReservation());
+        Reservation reservation = new Reservation();
+        reservation.setId(id);
+        reservation.setUtilisateur(u);
+        reservation.setVelo(v);
+        reservation.setReservation(dto.getReservation());
 
-    Reservation saved = reservationRepository.save(reservation);
-    return reservationMapper.toResponseDto(saved);
+        Reservation saved = reservationRepository.save(reservation);
+        return reservationMapper.toResponseDto(saved);
     }
 
     @Transactional(readOnly = true)
@@ -81,68 +79,62 @@ public class ReservationService {
     @Transactional(readOnly = true)
     public List<ReservationResponseDTO> listByUtilisateur(Integer utilisateurId) {
         return reservationMapper.toResponseDtoList(
-                reservationRepository.findByUtilisateur_Id(utilisateurId)
-        );
+                reservationRepository.findByUtilisateur_Id(utilisateurId));
     }
 
     @Transactional(readOnly = true)
     public List<ReservationResponseDTO> listByVelo(Integer veloId) {
         return reservationMapper.toResponseDtoList(
-                reservationRepository.findByVelo_Id(veloId)
-        );
+                reservationRepository.findByVelo_Id(veloId));
     }
 
     public ReservationResponseDTO update(
-        Integer utilisateurId,
-        Integer veloId,
-        ReservationCreateDTO dto
-    ) {
+            Integer utilisateurId,
+            Integer veloId,
+            ReservationCreateDTO dto) {
 
-    ReservationId id = new ReservationId(utilisateurId, veloId);
+        ReservationId id = new ReservationId(utilisateurId, veloId);
 
-    Reservation reservation = reservationRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException(
-                    "Réservation introuvable pour utilisateur "
-                            + utilisateurId + " et vélo " + veloId));
+        Reservation reservation = reservationRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(
+                        "Réservation introuvable pour utilisateur "
+                                + utilisateurId + " et vélo " + veloId));
 
-    Velo velo = reservation.getVelo();
+        Velo velo = reservation.getVelo();
 
-    int ancienneQuantite = reservation.getReservation();
-    int nouvelleQuantite = dto.getReservation();
+        int ancienneQuantite = reservation.getReservation();
+        int nouvelleQuantite = dto.getReservation();
 
-    int difference = nouvelleQuantite - ancienneQuantite;
+        int difference = nouvelleQuantite - ancienneQuantite;
 
         if (difference > 0 && difference > velo.getQuantite()) {
             throw new IllegalArgumentException(
-                "Plus de vélos disponibles pour ce vélo"
-            );
+                    "Plus de vélos disponibles pour ce vélo");
         }
 
-    velo.setQuantite(velo.getQuantite() - difference);
-    veloRepository.save(velo);
+        velo.setQuantite(velo.getQuantite() - difference);
+        veloRepository.save(velo);
 
-    reservation.setReservation(nouvelleQuantite);
+        reservation.setReservation(nouvelleQuantite);
 
-    Reservation saved = reservationRepository.save(reservation);
-    return reservationMapper.toResponseDto(saved);
+        Reservation saved = reservationRepository.save(reservation);
+        return reservationMapper.toResponseDto(saved);
     }
-
-
 
     public void delete(Integer utilisateurId, Integer veloId) {
 
-    ReservationId id = new ReservationId(utilisateurId, veloId);
+        ReservationId id = new ReservationId(utilisateurId, veloId);
 
-    Reservation reservation = reservationRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException(
-                    "Réservation introuvable"));
+        Reservation reservation = reservationRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(
+                        "Réservation introuvable"));
 
-    Velo v = reservation.getVelo();
+        Velo v = reservation.getVelo();
 
-    v.setQuantite(v.getQuantite() + reservation.getReservation());
-    veloRepository.save(v);
+        v.setQuantite(v.getQuantite() + reservation.getReservation());
+        veloRepository.save(v);
 
-    reservationRepository.deleteById(id);
+        reservationRepository.deleteById(id);
     }
 
 }

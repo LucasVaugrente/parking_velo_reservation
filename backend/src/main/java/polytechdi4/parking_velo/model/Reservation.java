@@ -1,6 +1,13 @@
 package polytechdi4.parking_velo.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,7 +34,8 @@ public class Reservation {
     @Column(name = "reservation", nullable = false)
     private Integer reservation;
 
-    public Reservation() {}
+    public Reservation() {
+    }
 
     public Reservation(Utilisateur u, Velo v, Integer reservation) {
         this.utilisateur = u;

@@ -17,6 +17,7 @@ public class VeloCreateDTO {
 
     @NotBlank
     private String latitude;
+
     @NotBlank
     private String longitude;
 }

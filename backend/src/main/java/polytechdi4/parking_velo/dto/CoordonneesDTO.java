@@ -13,5 +13,4 @@ public class CoordonneesDTO {
     private Integer id;
     private String latitude;
     private String longitude;
-
 }

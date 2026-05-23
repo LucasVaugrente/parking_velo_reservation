@@ -1,7 +1,14 @@
 package polytechdi4.parking_velo.model;
 
-import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,17 +20,23 @@ import java.util.Set;
 @Entity
 @Table(name = "utilisateur")
 public class Utilisateur {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, length = 100) private String nom;
-    @Column(nullable = false, length = 100) private String prenom;
-    @Column(nullable = false, length = 100) private String mail;
+    @Column(nullable = false, length = 100)
+    private String nom;
+    @Column(nullable = false, length = 100)
+    private String prenom;
+    @Column(nullable = false, length = 100)
+    private String mail;
 
     @JsonIgnore
-    @Column(nullable = false, length = 100) private String password;
+    @Column(nullable = false, length = 100)
+    private String password;
 
-    @Column(nullable = false, length = 100) private String username;
+    @Column(nullable = false, length = 100)
+    private String username;
 
     @OneToMany(mappedBy = "utilisateur", orphanRemoval = true)
     @JsonIgnore

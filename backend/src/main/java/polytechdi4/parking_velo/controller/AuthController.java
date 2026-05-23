@@ -1,7 +1,11 @@
 package polytechdi4.parking_velo.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import org.springframework.web.bind.annotation.*;
 import polytechdi4.parking_velo.dto.LoginRequestDTO;
 import polytechdi4.parking_velo.dto.LoginResponseDTO;
 import polytechdi4.parking_velo.service.AuthService;

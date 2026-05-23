@@ -1,8 +1,8 @@
-package polytechdi4.parking_velo.hashPassword;
+package polytechdi4.parking_velo.security;
 
 import java.security.MessageDigest;
 
-public class HashPwd {
+public class HashPassword {
     public static String sha256(String value) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");

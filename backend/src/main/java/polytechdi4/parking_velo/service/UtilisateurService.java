@@ -8,10 +8,10 @@ import polytechdi4.parking_velo.dto.UtilisateurResponseDTO;
 import polytechdi4.parking_velo.dto.UtilisateurUpdateDTO;
 import polytechdi4.parking_velo.exception.ConflictException;
 import polytechdi4.parking_velo.exception.NotFoundException;
-import polytechdi4.parking_velo.hashPassword.HashPwd;
 import polytechdi4.parking_velo.mapper.UtilisateurMapper;
 import polytechdi4.parking_velo.model.Utilisateur;
 import polytechdi4.parking_velo.repository.UtilisateurRepository;
+import polytechdi4.parking_velo.security.HashPassword;
 
 import java.util.List;
 
@@ -33,7 +33,7 @@ public class UtilisateurService {
 
         Utilisateur entity = mapper.toEntity(dto);
 
-        entity.setPassword(HashPwd.sha256(dto.getPassword()));
+        entity.setPassword(HashPassword.sha256(dto.getPassword()));
         Utilisateur saved = repo.save(entity);
         return mapper.toResponseDto(saved);
     }
@@ -67,7 +67,7 @@ public class UtilisateurService {
         existing.setUsername(dto.getUsername());
 
         if (dto.getPassword() != null && !dto.getPassword().isEmpty()) {
-            existing.setPassword(HashPwd.sha256(dto.getPassword()));
+            existing.setPassword(HashPassword.sha256(dto.getPassword()));
         }
 
         Utilisateur saved = repo.save(existing);
