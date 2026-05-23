@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class UtilisateurService {
+public class UtilisateurService implements UtilisateurMapper {
 
     private final UtilisateurRepository repo;
     private final UtilisateurMapper mapper;
