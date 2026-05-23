@@ -1,4 +1,4 @@
-FROM node:20-alpine AS build
+FROM node:lts-alpine3.23 AS build
 
 WORKDIR /app
 
@@ -7,19 +7,14 @@ RUN npm ci --legacy-peer-deps
 
 COPY . .
 
-# Build l'application
 RUN npm run build -- --configuration production || npm run build
 
 FROM nginx:alpine
 
-# Vérifier la structure du dossier dist et copier correctement
-# Angular crée généralement dist/nom-projet/browser ou dist/nom-projet
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copier les fichiers buildés - on copie tout le contenu de dist
 COPY --from=build /app/dist /tmp/dist
 
-# Script pour trouver et copier les bons fichiers
 RUN if [ -d /tmp/dist/*/browser ]; then \
     cp -r /tmp/dist/*/browser/* /usr/share/nginx/html/; \
     elif [ -d /tmp/dist/* ]; then \
