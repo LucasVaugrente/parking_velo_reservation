@@ -12,8 +12,8 @@ services:
       MYSQL_PASSWORD: velo_password
     volumes:
       - mariadb_data:/var/lib/mysql
-      - ./data/parking_structure.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
-      - ./data/parking_jdd.sql:/docker-entrypoint-initdb.d/02-data.sql:ro
+      - ./backend/data/parking_structure.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+      - ./backend/data/parking_jdd.sql:/docker-entrypoint-initdb.d/02-data.sql:ro
     ports:
       - "3306:3306"
     networks:
@@ -47,6 +47,20 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
+
+  backend-init:
+    image: curlimages/curl:8.4.0
+    container_name: parking_velo_backend_init
+    restart: "no"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - velo-network
+    command: >
+      sh -c 'until curl -fsS http://backend:8080/actuator/health; do sleep 2; done && \
+      curl -X POST -H "Content-Type: application/json" -d '\''{"nom":"Dupont","prenom":"Jean","mail":"dupont@example.com","username":"dupontj","password":"monSuperMDP"}'\'' http://backend:8080/api/utilisateurs && \
+      curl -X POST -H "Content-Type: application/json" -d '\''{"utilisateurId":1,"veloId":2,"debut":"2025-11-01T09:00:00","fin":"2025-11-01T12:00:00"}'\'' http://backend:8080/api/reservations
 
   frontend:
     build:
